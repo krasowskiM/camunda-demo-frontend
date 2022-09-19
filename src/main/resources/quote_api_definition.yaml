@@ -1,0 +1,75 @@
+openapi: 3.0.1
+info:
+  title: Quote service API
+  description: Api providing functions for customer quote
+servers:
+- url: http://localhost:8085
+  description: Generated server url
+paths:
+  /quoteApi/v1:
+    post:
+      tags:
+      - quote-controller
+      operationId: processQuote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+        required: true
+      responses:
+        "200":
+          description: customer data is enriched with additional information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponse'
+        "470":
+          description: customer quotation score is less than required
+        "499":
+          description: there were rejected applications for this customer
+components:
+  schemas:
+    QuoteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        registrationNumber:
+          type: string
+        engineType:
+          type: string
+    Car:
+      type: object
+      properties:
+        registrationNumber:
+          type: string
+        engineType:
+          type: string
+        enginePower:
+          type: string
+    Owner:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        city:
+          type: string
+    QuoteResponse:
+      required:
+      - car
+      - owner
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/Owner'
+        car:
+          $ref: '#/components/schemas/Car'
